@@ -9,27 +9,27 @@
 
 int main(void)
 {
-	int c;
-	int d = 0;
+	int ones = '0';
+	int tens = '0';
 
-	while (d < 10)
+	for (tens = '0'; tens <= '9'; tens++)
 	{
-		c = 0;
-		while (c < 10)
+		for (ones = '0'; ones <= '9'; ones++)
 		{
-
-			putchar('0' + d);
-			putchar('0' + c);
-
-			if (c + d != 18)
+			if (!((ones == tens) || (tens > ones)))
 			{
-				putchar(',');
-				putchar(' ');
+				putchar(tens);
+				putchar(ones);
+				if (!(ones == '9' && tens == '8'))
+				{
+					putchar(',');
+					putchar(' ');
+				}
 			}
-			c++;
 		}
-		d++;
 	}
+
 	putchar('\n');
+	
 	return (0);
 }
