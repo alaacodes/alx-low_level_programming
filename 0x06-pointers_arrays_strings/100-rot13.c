@@ -13,15 +13,17 @@ char *rot13(char *str)
 	char s[] =  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 	char s1[] = "NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm";
 
-	for (; str[i] != '\0'; i++)
+	while (str[i])
 	{
-		for (k = 0; k <= 51; k++)
+		for (k = 0; k < 52; k++)
 		{
 			if (s[k] == str[i])
 			{
 				str[i] = s1[k];
+				break;
 			}
 		}
+		str++;
 	}
 	return (str);
 }
