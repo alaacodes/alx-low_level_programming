@@ -131,5 +131,6 @@ char **strtow(char *str)
 		}
 	}
 	tokens[i] = NULL;
+	
 	return (tokens);
 
