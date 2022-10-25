@@ -1,68 +1,47 @@
 #include "lists.h"
 
-#include <stdlib.h>
-
-#include <stdio.h>
-
-
-
 /**
- * _r - reallocates memory for an array of pointers
- * to the nodes in a linked list
- * @list: the old list to append
- * @size: size of the new list (always one more than the old list)
- * @new: new node to add to the list
+ * print_listint_safe - prints a list even with loop
+ * @head: pointer to head
  *
- * Return: pointer to the new list
+ * Return: number of nodes
  */
-
-const listint_t **_r(const listint_t **list, size_t size, const listint_t *new)
-
-{
-	const listint_t **newlist;
-	size_t i;
-
-	newlist = malloc(size * sizeof(listint_t *));
-	if (newlist == NULL)
-	{
-		free(list);
-		exit(98);
-	}
-	for (i = 0; i < size - 1; i++)
-		newlist[i] = list[i];
-	newlist[i] = new;
-	free(list);
-	return (newlist);
-}
-/**
- * print_listint_safe - prints a listint_t linked list.
- * @head: pointer to the start of the list
- *
- * Return: the number of nodes in the list
- */
-
 size_t print_listint_safe(const listint_t *head)
-
 {
-	size_t i, num = 0;
-	const listint_t **list = NULL;
+	int count = 0;
+	const listint_t *visited[1024];
 
-	while (head != NULL)
+	while (head)
 	{
-		for (i = 0; i < num; i++)
+		if (is_visited(head, visited, count))
 		{
-			if (head == list[i])
-			{
-				printf("-> [%p] %d\n", (void *)head, head->n);
-				free(list);
-				free(list);
-			}
+			printf("-> [%p] %d\n", (void *)head, head->n);
+			break;
 		}
-		num++;
-		list = _r(list, num, head);
+		visited[count++] = head;
 		printf("[%p] %d\n", (void *)head, head->n);
-		printf("[%p] %d\n", (void *)head, head->n);
+		head = head->next;
 	}
-	free(list);
-	return (num);
+	return (count);
+}
+
+/**
+ * is_visited - check if a node is visited
+ * @node: pointer to node
+ * @visited: list of visited
+ * @count: length of visited
+ *
+ * Return: 1 if is visited and 0 otherwise
+ */
+int is_visited(const listint_t *node, const listint_t **visited, int count)
+{
+	int i = 0;
+
+	while (i < count)
+	{
+		if (node == visited[i])
+			return (1);
+		i++;
+	}
+	return (0);
 }

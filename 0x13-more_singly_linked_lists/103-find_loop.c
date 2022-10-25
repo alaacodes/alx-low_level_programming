@@ -1,36 +1,35 @@
 #include "lists.h"
 
-
-
 /**
- * find_listint_loop - finds the loop in a linked list.
- * @head: pointer to the beginning of the list
+ * find_listint_loop - finds the index at which a loop starts
+ * @head: list head
  *
- * Return: address of the node where the loop starts or NULL if there's no loop
+ * Description: mdldndkdbfkml
+ * Return: pointer to loop start
  */
-
 listint_t *find_listint_loop(listint_t *head)
-
 {
-	listint_t *tortoise, *hare;
+	listint_t *fast = head, *slow = head;
 
-	tortoise = hare = head;
-	while (tortoise && hare && hare->next)
-	{
-		tortoise = tortoise->next;
-		hare = hare->next->next;
-		if (tortoise == hare)
-		{
-			tortoise = head;
-			break;
-		}
-	}
-	if (!tortoise || !hare || !hare->next)
+	if (!head || !(head->next))
 		return (NULL);
-	while (tortoise != hare)
+	while (slow && fast && fast->next)
 	{
-		tortoise = tortoise->next;
-		hare = hare->next;
+		slow = slow->next;
+		fast = fast->next->next;
+		if (slow == fast)
+			break;
 	}
-	return (hare);
+	/* Loop not found */
+	if (slow != fast)
+		return (NULL);
+	/* loop found - find start */
+	slow = head;
+	while (slow != fast)
+	{
+		slow = slow->next;
+		fast = fast->next;
+	}
+	return (slow);
 }
+

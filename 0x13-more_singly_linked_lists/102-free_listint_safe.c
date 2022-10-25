@@ -1,66 +1,52 @@
 #include "lists.h"
-#include <stdlib.h>
+
+int is_visited2(listint_t *node, listint_t **visited, int count);
 
 /**
- * find_listint_loop_fl - finds a loop in a linked list
+ * free_listint_safe - prints a list even with loop
+ * @head: pointer to head
  *
- * @head: linked list to search
- *
- * Return: address of node where loop starts/returns, NULL if no loop
+ * Return: number of nodes
  */
-listint_t *find_listint_loop_fl(listint_t *head)
+size_t free_listint_safe(listint_t **head)
 {
-	listint_t *ptr, *end;
+	listint_t *tmp, *visited[1024];
+	int count = 0;
 
-	if (head == NULL)
-		return (NULL);
-
-	for (end = head->next; end != NULL; end = end->next)
+	if (!head)
+		return (-1);
+	while (*head)
 	{
-		if (end == end->next)
-			return (end);
-		for (ptr = head; ptr != end; ptr = ptr->next)
-			if (ptr == end->next)
-				return (end->next);
+		if (is_visited2(*head, visited, count))
+		{
+			*head = NULL;
+			break;
+		}
+		visited[count++] = *head;
+		tmp = (*head)->next;
+		free(*head);
+		*head = tmp;
 	}
-	return (NULL);
+	return (count);
 }
 
 /**
- * free_listint_safe - frees a listint list, even if it has a loop
+ * is_visited2 - check if a node is visited
+ * @node: pointer to node
+ * @visited: list of visited
+ * @count: length of visited
  *
- * @h: head of list
- *
- * Return: number of nodes freed
+ * Return: 1 if is visited and 0 otherwise
  */
-size_t free_listint_safe(listint_t **h)
+int is_visited2(listint_t *node, listint_t **visited, int count)
 {
-	listint_t *next, *loopnode;
-	size_t len;
-	int loop = 1;
+	int i = 0;
 
-	if (h == NULL || *h == NULL)
-		return (0);
-
-	loopnode = find_listint_loop_fl(*h);
-	for (len = 0; (*h != loopnode || loop) && *h != NULL; *h = next)
+	while (i < count)
 	{
-		len++;
-		next = (*h)->next;
-		if (*h == loopnode && loop)
-		{
-			if (loopnode == loopnode->next)
-			{
-				free(*h);
-				break;
-			}
-			len++;
-			next = next->next;
-			free((*h)->next);
-			loop = 0;
-		}
-		free(*h);
+		if (node == visited[i])
+			return (1);
+		i++;
 	}
-	*h = NULL;
-	return (len);
+	return (0);
 }
