@@ -2,8 +2,8 @@
 #include <stdio.h>
 
 /**
- * listint_len - Returns the number of elements 
- * 		in a linked listint_t list
+ * listint_len - Returns the number of elements
+ * in a linked listint_t list
  * @h: pointer to the head of hte listint_t list
  *
  * Return: the number of elements in the listint_t list
