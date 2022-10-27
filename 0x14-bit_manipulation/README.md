@@ -1,1 +1,1 @@
-Bit Manipulation Readme file
+Bit Manipulation readme
