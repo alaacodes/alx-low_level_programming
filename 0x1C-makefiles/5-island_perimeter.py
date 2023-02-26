@@ -1,76 +1,44 @@
 #!/usr/bin/python3
-""" defines function island_perimiter that returns the perimiter
-    of island.
+"""
+This module defines a function that computes the perimeter of an island
+in a rectangular grid.
 """
 
-
 def island_perimeter(grid):
-    rows = len(grid)
-    perimiter = 0
+    """
+    Computes the perimeter of the island described in `grid`.
 
-    if grid != []:
-        cols = len(grid[0])
+    Args:
+        grid (list of list of int): A rectangular grid of 0s and 1s, where
+            0 represents water and 1 represents land.
 
-    for r in range(rows):
-        for c in range(cols):
-            if c == 0:
-                perimiter += 1
-                if r == 0:
-                    perimiter += 1
-                    if c+1 < cols:
-                        if not grid[r][c + 1]:
-                            perimiter += 1
-                        if not grid[r+1][c]:
-                            perimiter += 1
-                if r+1 == rows:
-                    perimiter += 1
-                    if c+1 < cols:
-                        if not grid[r][c+1]:
-                            perimiter += 1
-                        if not grid[r-1][c]:
-                            perimiter += 1
-            if c+1 == cols:
-                perimiter += 1
-                if r == 0 and c-1 != -1:
-                    perimiter += 1
-                    if not grid[r][c-1]:
-                        perimiter += 1
-                    if not grid[r+1][c]:
-                        perimiter += 1
-                if r+1 == rows and c-1 != -1:
-                    perimiter += 1
-                    if not grid[r][c-1]:
-                        perimiter += 1
-                    if not grid[r-1][c]:
-                        perimiter += 1
+    Returns:
+        The perimeter of the island, or 0 if the grid is empty or has no land.
 
-            if c != 0 and c+1 != cols:
-                if r == 0:
-                    perimiter += 1
-                    if not grid[r][c-1]:
-                        perimiter += 1
-                    if not grid[r][c+1]:
-                        perimiter += 1
-                    if r+1 != rows and not grid[r+1][c]:
-                        perimiter += 1
-                if r+1 == rows:
-                    perimiter += 1
-                    if not grid[r][c-1]:
-                        perimiter += 1
-                    if not grid[r][c+1]:
-                        perimiter += 1
-                    if r-1 != -1 and not grid[r][c]:
-                        perimiter += 1
+    Example:
+        >>> grid = [
+        ...     [0, 0, 0, 0, 0, 0],
+        ...     [0, 1, 0, 0, 0, 0],
+        ...     [0, 1, 0, 0, 0, 0],
+        ...     [0, 1, 1, 1, 0, 0],
+        ...     [0, 0, 0, 0, 0, 0]
+        ... ]
+        >>> island_perimeter(grid)
+        12
+    """
+    if not grid or not grid[0]:
+        return 0
 
-                if not r and r+1 != rows:
-                    if not c-1 and not grid[r][c-1]:
-                        perimiter += 1
-                    if c+1 != cols and not grid[r][c+1]:
-                        perimiter += 1
-                    if not grid[r-1][c]:
-                        perimiter += 1
-                    if not grid[r+1][c]:
-                        perimiter += 1
+    rows, cols = len(grid), len(grid[0])
+    perimeter = 0
 
+    for i in range(rows):
+        for j in range(cols):
+            if grid[i][j] == 1:
+                perimeter += 4
+                if i > 0 and grid[i-1][j] == 1:
+                    perimeter -= 2
+                if j > 0 and grid[i][j-1] == 1:
+                    perimeter -= 2
 
-    return perimiter
+    return perimeter
